@@ -9,7 +9,7 @@
   },
   "functions": {
     "server/_core/index.ts": {
-      "runtime": "nodejs18.x",
+      "runtime": "nodejs@18",
       "memory": 1024,
       "maxDuration": 60
     }

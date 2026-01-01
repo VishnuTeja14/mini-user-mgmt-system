@@ -1,21 +1,9 @@
-import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import { Users, Lock, Shield } from "lucide-react";
 
 export default function Home() {
-  const { user, loading } = useAuth();
   const [, setLocation] = useLocation();
-
-  if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
-  }
-
-  if (user) {
-    // Redirect authenticated users to dashboard
-    setLocation("/dashboard");
-    return null;
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-100">
@@ -96,65 +84,24 @@ export default function Home() {
         <div className="mt-20 bg-white rounded-lg shadow-md p-12">
           <h3 className="text-2xl font-bold mb-8">Key Features</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="flex items-start gap-4">
-              <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                <span className="text-white text-sm">✓</span>
+            {[
+              { title: "User Registration", desc: "Create new accounts with email validation and password strength requirements" },
+              { title: "Secure Login", desc: "Authenticate with email and password using bcrypt hashing" },
+              { title: "Profile Management", desc: "Update profile information and change passwords securely" },
+              { title: "Admin Dashboard", desc: "View all users, activate/deactivate accounts, and manage permissions" },
+              { title: "Pagination", desc: "Efficiently browse through user lists with pagination support" },
+              { title: "Error Handling", desc: "Clear error messages and validation feedback for better user experience" },
+            ].map((feature, i) => (
+              <div key={i} className="flex items-start gap-4">
+                <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <span className="text-white text-sm">✓</span>
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-1">{feature.title}</h4>
+                  <p className="text-gray-600">{feature.desc}</p>
+                </div>
               </div>
-              <div>
-                <h4 className="font-semibold mb-1">User Registration</h4>
-                <p className="text-gray-600">Create new accounts with email validation and password strength requirements</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                <span className="text-white text-sm">✓</span>
-              </div>
-              <div>
-                <h4 className="font-semibold mb-1">Secure Login</h4>
-                <p className="text-gray-600">Authenticate with email and password using bcrypt hashing</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                <span className="text-white text-sm">✓</span>
-              </div>
-              <div>
-                <h4 className="font-semibold mb-1">Profile Management</h4>
-                <p className="text-gray-600">Update profile information and change passwords securely</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                <span className="text-white text-sm">✓</span>
-              </div>
-              <div>
-                <h4 className="font-semibold mb-1">Admin Dashboard</h4>
-                <p className="text-gray-600">View all users, activate/deactivate accounts, and manage permissions</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                <span className="text-white text-sm">✓</span>
-              </div>
-              <div>
-                <h4 className="font-semibold mb-1">Pagination</h4>
-                <p className="text-gray-600">Efficiently browse through user lists with pagination support</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                <span className="text-white text-sm">✓</span>
-              </div>
-              <div>
-                <h4 className="font-semibold mb-1">Error Handling</h4>
-                <p className="text-gray-600">Clear error messages and validation feedback for better user experience</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

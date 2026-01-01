@@ -9,59 +9,17 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import AdminDashboard from "./pages/AdminDashboard";
 import UserDashboard from "./pages/UserDashboard";
-import { useAuth } from "./_core/hooks/useAuth";
-import { Loader2 } from "lucide-react";
-
-function ProtectedRoute({ component: Component, requiredRole }: { component: any; requiredRole?: string }) {
-  const { user, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="animate-spin" />
-      </div>
-    );
-  }
-
-  if (!user) {
-    return <NotFound />;
-  }
-
-  if (requiredRole && user.role !== requiredRole) {
-    return <NotFound />;
-  }
-
-  return <Component />;
-}
 
 function Router() {
-  const { user, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="animate-spin" />
-      </div>
-    );
-  }
-
   return (
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
-      <Route 
-        path="/dashboard" 
-        component={() => 
-          user?.role === "admin" 
-            ? <ProtectedRoute component={AdminDashboard} requiredRole="admin" />
-            : <ProtectedRoute component={UserDashboard} />
-        } 
-      />
-      <Route path="/admin" component={() => <ProtectedRoute component={AdminDashboard} requiredRole="admin" />} />
-      <Route path="/profile" component={() => <ProtectedRoute component={UserDashboard} />} />
+      <Route path="/dashboard" component={UserDashboard} />
+      <Route path="/admin" component={AdminDashboard} />
+      <Route path="/profile" component={UserDashboard} />
       <Route path="/404" component={NotFound} />
-      {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>
   );
@@ -70,9 +28,7 @@ function Router() {
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider
-        defaultTheme="light"
-      >
+      <ThemeProvider defaultTheme="light">
         <TooltipProvider>
           <Toaster />
           <Router />

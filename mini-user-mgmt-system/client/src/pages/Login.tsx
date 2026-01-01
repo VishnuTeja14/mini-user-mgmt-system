@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
-import { trpc } from "@/lib/trpc";
+
+// Dummy credentials for frontend-only login
+const DUMMY_USER = { email: "admin@test.com", password: "Admin@123" };
 
 export default function Login() {
   const [, setLocation] = useLocation();
@@ -12,19 +14,9 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const loginMutation = trpc.auth.login.useMutation({
-    onSuccess: (data) => {
-      toast.success("Login successful!");
-      setLocation("/dashboard");
-    },
-    onError: (error) => {
-      toast.error(error.message || "Login failed");
-    },
-  });
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validation
     if (!email || !password) {
       toast.error("Please fill in all fields");
@@ -37,8 +29,17 @@ export default function Login() {
     }
 
     setIsLoading(true);
-    await loginMutation.mutateAsync({ email, password });
-    setIsLoading(false);
+
+    setTimeout(() => {
+      // Check against dummy credentials
+      if (email === DUMMY_USER.email && password === DUMMY_USER.password) {
+        toast.success("Login successful!");
+        setLocation("/dashboard"); // redirect to dashboard
+      } else {
+        toast.error("Invalid email or password");
+      }
+      setIsLoading(false);
+    }, 1000); // simulate network delay
   };
 
   return (
